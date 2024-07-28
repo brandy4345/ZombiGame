@@ -1,0 +1,102 @@
+[gd_scene load_steps=11 format=3 uid="uid://to7mnx5utjd6"]
+
+[ext_resource type="Script" path="res://scripts/player/player.gd" id="1_uq6pj"]
+[ext_resource type="Script" path="res://scripts/player/Zoom.gd" id="2_fsaec"]
+[ext_resource type="PackedScene" uid="uid://di87218cp0etl" path="res://modelo3D/Prota.blend" id="2_hdw08"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_amei0"]
+radius = 0.186257
+height = 0.862479
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_m26fm"]
+animation = &"idle"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_fvyou"]
+animation = &"walk"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_vs0e1"]
+xfade_time = 0.2
+advance_mode = 2
+advance_condition = &"isMoving"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_72vvx"]
+xfade_time = 0.2
+advance_mode = 2
+advance_condition = &"idle"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_560wm"]
+switch_mode = 1
+advance_mode = 2
+
+[sub_resource type="AnimationNodeStateMachine" id="AnimationNodeStateMachine_xr1ge"]
+states/idle/node = SubResource("AnimationNodeAnimation_m26fm")
+states/idle/position = Vector2(410.667, 84.6667)
+states/walk/node = SubResource("AnimationNodeAnimation_fvyou")
+states/walk/position = Vector2(540, 90)
+transitions = ["idle", "walk", SubResource("AnimationNodeStateMachineTransition_vs0e1"), "walk", "idle", SubResource("AnimationNodeStateMachineTransition_72vvx"), "Start", "idle", SubResource("AnimationNodeStateMachineTransition_560wm")]
+
+[node name="Player" type="RigidBody3D"]
+axis_lock_angular_x = true
+axis_lock_angular_y = true
+axis_lock_angular_z = true
+script = ExtResource("1_uq6pj")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.423301, 0)
+shape = SubResource("CapsuleShape3D_amei0")
+
+[node name="MoverPivote" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3, 3, 3)
+script = ExtResource("2_fsaec")
+
+[node name="GirarPivote" type="Node3D" parent="MoverPivote"]
+transform = Transform3D(0.707107, -0.374709, 0.599661, 0, 0.848048, 0.529919, -0.707107, -0.374709, 0.599661, 0, 0, 0)
+
+[node name="Camera3D" type="Camera3D" parent="MoverPivote/GirarPivote"]
+
+[node name="AnimationTree" type="AnimationTree" parent="."]
+root_node = NodePath("../Prota")
+tree_root = SubResource("AnimationNodeStateMachine_xr1ge")
+anim_player = NodePath("../Prota/AnimationPlayer")
+parameters/conditions/idle = false
+parameters/conditions/isMoving = false
+
+[node name="Prota" parent="." instance=ExtResource("2_hdw08")]
+
+[node name="Skeleton3D" parent="Prota/Armature" index="0"]
+bones/1/rotation = Quaternion(0.999124, 0.0418453, 7.54318e-08, 9.51569e-09)
+bones/4/rotation = Quaternion(-0.695684, -0.102777, -0.705334, 0.0892419)
+bones/7/rotation = Quaternion(-0.682786, 0.12894, 0.713549, 0.0895916)
+
+[node name="Cube_001" parent="Prota/Armature/Skeleton3D" index="0"]
+transform = Transform3D(0.996498, 0.0836173, -3.92322e-09, -0.0836173, 0.996498, -3.40683e-08, 1.06078e-09, 3.4277e-08, 1, 0.260191, 3.61679, -0.00194708)
+
+[node name="Cube_003" parent="Prota/Armature/Skeleton3D" index="1"]
+transform = Transform3D(0.187164, 0.982205, -0.0155276, -0.98197, 0.1875, 0.0240731, 0.0265561, 0.0107419, 0.999589, 1.52229, 0.754237, 0.0644059)
+
+[node name="Cube_006" parent="Prota/Armature/Skeleton3D" index="2"]
+transform = Transform3D(0.382207, -0.922269, 0.057771, 0.921616, 0.385003, 0.0489652, -0.0674011, 0.0345276, 0.997128, -1.49945, 1.01041, 0.0983903)
+
+[node name="Cube_002" parent="Prota/Armature/Skeleton3D" index="3"]
+transform = Transform3D(0.996498, 0.0836173, -9.10398e-08, -0.0836173, 0.996498, -2.67582e-08, 8.84835e-08, 3.4277e-08, 1, 0.012797, 1.00848, 0.174194)
+
+[node name="Cube_004" parent="Prota/Armature/Skeleton3D" index="4"]
+transform = Transform3D(3.03838e-07, 1, 1.19209e-07, -1, 3.63443e-07, 5.96046e-08, 1.19209e-07, -5.96046e-08, 1, 0.439195, -0.886058, 0.0339333)
+
+[node name="Cube_005" parent="Prota/Armature/Skeleton3D" index="5"]
+transform = Transform3D(2.85908e-07, 1, -2.84217e-14, -1, 2.85909e-07, -2.56488e-14, 1.84741e-13, 2.84217e-14, 1, -0.560805, -0.886058, 0.0339333)
+
+[node name="IsOnFloor1Raycast" type="RayCast3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.1, -0.1)
+exclude_parent = false
+target_position = Vector3(0, -0.2, 0)
+
+[node name="IsOnFloor2Raycast" type="RayCast3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.14, 0.1, 0.1)
+target_position = Vector3(0, -0.2, 0)
+
+[node name="IsOnFloor3Raycast" type="RayCast3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.14, 0.1, 0.1)
+target_position = Vector3(0, -0.2, 0)
+
+[editable path="Prota"]

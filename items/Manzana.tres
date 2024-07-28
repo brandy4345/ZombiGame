@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="Item" load_steps=3 format=3 uid="uid://dq8eepxfoyc2m"]
+
+[ext_resource type="Script" path="res://scripts/item/Item.gd" id="1_ajcgm"]
+[ext_resource type="Texture2D" uid="uid://ngpqgdnl7rb8" path="res://Art/manzana.png" id="2_ha6c8"]
+
+[resource]
+script = ExtResource("1_ajcgm")
+nombre = "Manzana"
+descripcion = "Una manzanita "
+stackeabel = true
+texture = ExtResource("2_ha6c8")

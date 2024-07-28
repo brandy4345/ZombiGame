@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="InventoryData" load_steps=5 format=3 uid="uid://ccw7gishvtx72"]
+
+[ext_resource type="Script" path="res://scripts/inventory/InventoryData.gd" id="1_2gx3x"]
+[ext_resource type="Resource" uid="uid://dq8eepxfoyc2m" path="res://items/Manzana.tres" id="2_v8ym7"]
+[ext_resource type="Script" path="res://scripts/inventory/SlotData.gd" id="3_yows4"]
+
+[sub_resource type="Resource" id="Resource_l3j2n"]
+script = ExtResource("3_yows4")
+item = ExtResource("2_v8ym7")
+quantity = 4
+
+[resource]
+script = ExtResource("1_2gx3x")
+slots = Array[ExtResource("3_yows4")]([SubResource("Resource_l3j2n"), null, null, null, null, null])
